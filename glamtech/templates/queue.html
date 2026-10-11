@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import photo, pagination %}
+{% block title %}Staff review queue{% endblock %}
+{% block content %}
+<div class="section-heading page-heading"><div><p class="eyebrow">STAFF WORKSPACE</p><h1>Review queue</h1><p>Inspect product details and private dummy verification documents before deciding.</p></div><span class="count">{{ listings.total }} pending</span></div>
+{% if listings.items %}<div class="status-grid">{% for listing in listings.items %}<article class="card status-card">{{ photo(listing) }}<div class="card-body"><span class="badge pending">Pending</span><h2>{{ listing.title }}</h2><p class="price">N$ {{ '{:,.2f}'.format(listing.price) }}</p><p class="muted">Seller: {{ listing.seller.email }}<br>Submitted {{ listing.created_at.strftime('%d %b %Y, %H:%M') }} UTC</p><a class="button secondary" href="{{ url_for('site.review', listing_id=listing.id) }}">Open review →</a></div></article>{% endfor %}</div>{{ pagination(listings, 'site.queue') }}{% else %}<div class="empty"><span class="empty-icon" aria-hidden="true">✓</span><h2>The queue is clear.</h2><p>New Pending submissions will appear here.</p></div>{% endif %}
+{% endblock %}

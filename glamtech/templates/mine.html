@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import photo, pagination %}
+{% block title %}My listings{% endblock %}
+{% block content %}
+<div class="section-heading page-heading"><div><p class="eyebrow">SELLER WORKSPACE</p><h1>My listings</h1><p>Track your products from submission to a recorded decision.</p></div><a class="button" href="{{ url_for('site.submit') }}">New listing +</a></div>
+{% if listings.items %}<div class="status-grid">{% for listing in listings.items %}<article class="card status-card">{{ photo(listing) }}<div class="card-body"><span class="badge {{ listing.status | lower }}">{{ listing.status }}</span><h2>{{ listing.title }}</h2><p class="price">N$ {{ '{:,.2f}'.format(listing.price) }}</p><p class="muted">Listing #{{ listing.id }} · Submitted {{ listing.created_at.strftime('%d %b %Y, %H:%M') }} UTC</p>{% for review in listing.reviews %}<div class="review-note"><strong>Staff review</strong><p>{{ review.note }}</p><small>{{ review.staff.email }} · {{ review.reviewed_at.strftime('%d %b %Y, %H:%M:%S') }} UTC</small></div>{% else %}<p class="muted">Waiting for staff review. Hidden from public buyers.</p>{% endfor %}</div></article>{% endfor %}</div>{{ pagination(listings, 'site.mine') }}{% else %}<div class="empty"><h2>Your first listing awaits.</h2><p>Add a product and follow its review here.</p><a class="button" href="{{ url_for('site.submit') }}">Submit a listing</a></div>{% endif %}
+{% endblock %}

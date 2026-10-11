@@ -1,0 +1,24 @@
+{% macro field(input, help='', autocomplete='off') %}
+<div class="field">
+  {{ input.label }}
+  {% if input.type == 'FileField' %}
+    {{ input(accept='image/jpeg,image/png', aria_describedby=input.id ~ '-help', aria_invalid='true' if input.errors else 'false') }}
+  {% elif input.type == 'PasswordField' %}
+    {{ input(autocomplete=autocomplete, aria_describedby=input.id ~ '-help', aria_invalid='true' if input.errors else 'false') }}
+  {% else %}
+    {{ input(aria_describedby=input.id ~ '-help', aria_invalid='true' if input.errors else 'false') }}
+  {% endif %}
+  <div id="{{ input.id }}-help" class="help">{% if help %}{{ help }}{% endif %}{% for error in input.errors %}<p class="field-error" role="alert">{{ error }}</p>{% endfor %}</div>
+</div>
+{% endmacro %}
+{% macro photo(listing) %}
+  {% set image = listing.files | selectattr('kind', 'equalto', 'photo') | first %}
+  {% if image %}<img class="product-photo" src="{{ url_for('site.photo', file_id=image.id) }}" alt="Product photo for {{ listing.title }}" loading="lazy">{% endif %}
+{% endmacro %}
+{% macro pagination(items, endpoint) %}
+  {% if items.pages > 1 %}<nav class="pagination" aria-label="Pagination">
+    {% if items.has_prev %}<a class="button secondary" href="{{ url_for(endpoint, page=items.prev_num) }}">Previous</a>{% endif %}
+    <span>Page {{ items.page }} of {{ items.pages }}</span>
+    {% if items.has_next %}<a class="button secondary" href="{{ url_for(endpoint, page=items.next_num) }}">Next</a>{% endif %}
+  </nav>{% endif %}
+{% endmacro %}

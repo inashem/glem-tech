@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="GlamTech CC marketplace — browse listings reviewed by our team.">
+  <title>{% block title %}Marketplace{% endblock %} · GlamTech CC</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="header">
+  <div class="nav-wrap">
+    <a class="brand" href="{{ url_for('site.home') }}"><span class="brand-mark">G<span>+</span></span><span>GlamTech <small>CC MARKETPLACE</small></span></a>
+    <nav aria-label="Main navigation">
+      <a href="{{ url_for('site.home') }}">Marketplace</a>
+      {% if g.user %}
+        {% if g.user.role == 'seller' %}
+          <a href="{{ url_for('site.mine') }}">My listings</a>
+          <a class="button small" href="{{ url_for('site.submit') }}">Sell a product</a>
+        {% else %}
+          <a class="button small" href="{{ url_for('site.queue') }}">Review queue</a>
+        {% endif %}
+        <form action="{{ url_for('site.logout') }}" method="post" class="logout">{{ logout_form.hidden_tag() }}<button class="link-button" type="submit">Sign out</button></form>
+      {% else %}
+        <a href="{{ url_for('site.login') }}">Sign in</a>
+        <a class="button small" href="{{ url_for('site.register') }}">Become a seller</a>
+      {% endif %}
+    </nav>
+  </div>
+</header>
+<main id="main" class="container">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}<div role="status" class="notice {{ category }}">{{ message }}</div>{% endfor %}
+  {% endwith %}
+  {% block content %}{% endblock %}
+</main>
+<footer class="footer"><div><strong>GlamTech CC</strong><span>S3732DC · Cybersecurity assignment demo</span></div><p>Use dummy documents only. This demonstration does not process orders or payments.</p></footer>
+</body>
+</html>

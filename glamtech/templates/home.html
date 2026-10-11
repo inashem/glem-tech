@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import photo, pagination %}
+{% block content %}
+<section class="hero">
+  <div class="hero-copy"><p class="eyebrow">THE GLAMTECH MARKETPLACE</p><h1>Good tech.<br>A better way to browse.</h1><p class="hero-lead">Explore products reviewed by our team. Every listing you see here has been approved before going live.</p><div class="hero-actions"><a class="button light" href="#products">Explore products <span aria-hidden="true">↗</span></a>{% if not g.user %}<a class="text-light" href="{{ url_for('site.register') }}">Start selling →</a>{% endif %}</div><p class="hero-note"><span class="dot"></span> Staff-reviewed listings · Clear seller status · Private verification</p></div>
+  <div class="hero-art" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="device"><div class="device-screen"><span>G+</span><small>TECH, WITH TRUST.</small></div><div class="device-base"></div></div><span class="art-label">REVIEWED & READY</span><span class="art-spark">✳</span></div>
+</section>
+<section id="products" class="products">
+  <div class="section-heading"><div><p class="eyebrow">DISCOVER</p><h2>Approved products</h2></div><span class="count">{{ listings.total }} listing{{ '' if listings.total == 1 else 's' }}</span></div>
+  {% if listings.items %}
+    <div class="product-grid">{% for listing in listings.items %}<article class="card">{{ photo(listing) }}<div class="card-body"><span class="badge approved">Approved</span><h3>{{ listing.title }}</h3><p class="description">{{ listing.description }}</p><p class="price">N$ {{ '{:,.2f}'.format(listing.price) }}</p><p class="muted">Listing #{{ listing.id }} · Reviewed by GlamTech</p></div></article>{% endfor %}</div>
+    {{ pagination(listings, 'site.home') }}
+  {% else %}<div class="empty"><span class="empty-icon" aria-hidden="true">↗</span><h3>Our next great find is on its way.</h3><p>Approved products will appear here. Have something to sell?</p><a class="button secondary" href="{{ url_for('site.register') if not g.user else url_for('site.submit') if g.user.role == 'seller' else url_for('site.queue') }}">Get started</a></div>{% endif %}
+</section>
+<section class="steps" aria-label="How the marketplace works"><div><span>01</span><h3>Submit your product</h3><p>Add the details, price, and a clear photo.</p></div><div><span>02</span><h3>Our team reviews it</h3><p>New listings stay private while pending.</p></div><div><span>03</span><h3>Approved listings go live</h3><p>Follow each decision from your seller page.</p></div></section>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import field %}
+{% block title %}{{ 'Seller registration' if registering else 'Sign in' }}{% endblock %}
+{% block content %}
+<div class="auth-layout"><aside class="auth-intro"><p class="eyebrow">GLAMTECH CC</p><h1>{{ 'Your next sale starts here.' if registering else 'Welcome back.' }}</h1><p>{{ 'Create your seller account, submit a product, and follow its progress through staff review.' if registering else 'Sign in to manage your listings or access your staff review queue.' }}</p><div class="intro-note"><strong>A clear path to publication</strong><p>Submit → Pending → Staff review → Approved or Rejected</p></div></aside>
+<section class="panel"><h2>{{ 'Create a seller account' if registering else 'Sign in to your account' }}</h2><p class="muted">{{ 'Public registration creates seller accounts only.' if registering else 'Use your seller or staff email address.' }}</p><form method="post">
+{{ form.hidden_tag() }}
+{{ field(form.email, 'For the demo, use an address such as seller@example.test.') }}
+{{ field(form.password, 'Choose a unique password with at least 12 characters.' if registering else '', 'new-password' if registering else 'current-password') }}
+<button class="button full" type="submit">{{ 'Create seller account' if registering else 'Sign in' }}</button>
+</form><p class="form-tail">{% if registering %}Already registered? <a href="{{ url_for('site.login') }}">Sign in</a>{% else %}New to GlamTech? <a href="{{ url_for('site.register') }}">Create a seller account</a>{% endif %}</p></section></div>
+{% endblock %}

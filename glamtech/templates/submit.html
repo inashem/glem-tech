@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import field %}
+{% block title %}Submit a listing{% endblock %}
+{% block content %}
+<div class="page-heading"><p class="eyebrow">SELLER WORKSPACE</p><h1>Give your tech a new home.</h1><p>Tell buyers about your product. Staff will review it before it appears publicly.</p></div>
+<div class="form-layout"><section class="panel"><h2>Product details</h2><form method="post" enctype="multipart/form-data">
+{{ form.hidden_tag() }}
+{{ field(form.title, '3–120 characters.') }}
+{{ field(form.description, '10–4,000 characters. Include condition and what is included.') }}
+{{ field(form.price, 'Namibian dollars. Positive amount, up to two decimal places.') }}
+{{ field(form.photo, 'Required. JPEG or PNG, up to 5 MiB and 12 million pixels.') }}
+<fieldset><legend>Private verification — dummy data only</legend><p class="muted">Optional image scans for the assignment. Only staff can download these documents; even the submitting seller cannot retrieve them.</p>
+{{ field(form.identity, 'Use a made-up verification image. No real identity information.') }}
+{{ field(form.payment, 'Use a made-up verification image. No real financial information.') }}
+</fieldset><button class="button full" type="submit">Submit for review →</button></form></section>
+<aside class="side-note"><span class="badge pending">Pending on submission</span><h2>What happens next?</h2><p>Your listing enters the staff review queue. Buyers cannot see the listing or its photo until it is approved.</p><p>Check <a href="{{ url_for('site.mine') }}">My listings</a> for the outcome and your reviewer’s note.</p><div class="rule"></div><h3>Make the demo safe</h3><p>Upload only generated dummy documents. JPEG and PNG images are supported; PDFs and other file types are not accepted.</p></aside></div>
+{% endblock %}
